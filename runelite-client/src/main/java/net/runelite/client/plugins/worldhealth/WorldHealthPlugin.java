@@ -10,6 +10,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
@@ -21,10 +22,10 @@ import java.time.temporal.ChronoUnit;
 )
 public class WorldHealthPlugin extends Plugin
 {
-    private static final long LOGIN_DELAY_MS = 1200;
+    private static final Duration STARTUP_DELAY = Duration.ofMillis(1200);
 
     private boolean ready = true;
-    private Instant loginTime;
+    private Instant startupTime;
 
     private int tickCount;
     private int tickTotalMs;
@@ -55,7 +56,7 @@ public class WorldHealthPlugin extends Plugin
 
     private void start() {
         ready = false;
-        loginTime = Instant.now();
+        startupTime = Instant.now().plus(STARTUP_DELAY);
         resetState();
     }
 
@@ -90,7 +91,7 @@ public class WorldHealthPlugin extends Plugin
     @Subscribe
     public void onGameTick(GameTick tick)
     {
-        if (getLoginMillis() < 0) return;
+        if (startupTime.isBefore(Instant.now())) return;
 
         if (lastTick != null)
         {
@@ -100,15 +101,6 @@ public class WorldHealthPlugin extends Plugin
 
         lastTick = Instant.now();
         tickCount++;
-    }
-
-    private long getLoginMillis()
-    {
-        if (loginTime == null)
-        {
-            return -1;
-        }
-        return ChronoUnit.MILLIS.between(loginTime, Instant.now()) - LOGIN_DELAY_MS;
     }
 
     protected int getTickCount()
