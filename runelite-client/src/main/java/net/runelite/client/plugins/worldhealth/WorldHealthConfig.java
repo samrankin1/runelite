@@ -39,4 +39,26 @@ public interface WorldHealthConfig extends Config
     {
         return false;
     }
+
+    @ConfigItem(
+            position = 4,
+            keyName = "showTickStdDev",
+            name = "Show standard deviation",
+            description = "Toggle display of tick time standard deviation"
+    )
+    default boolean showTickStdDev()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            position = 5,
+            keyName = "tickStdDevCache",
+            name = "Std dev cache",
+            description = "Number of recent ticks used to calculate standard deviation"
+    )
+    default int tickStdDevCache()
+    {
+        return 30;
+    }
 }

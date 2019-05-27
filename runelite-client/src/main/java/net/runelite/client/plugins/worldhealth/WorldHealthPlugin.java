@@ -13,6 +13,8 @@ import javax.inject.Inject;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.LinkedList;
+import java.util.List;
 
 @PluginDescriptor(
         name = "World Health",
@@ -29,9 +31,13 @@ public class WorldHealthPlugin extends Plugin
 
     private int tickCount;
     private int tickTotalMs;
+    private double tickAvgMs;
 
-    private Instant lastTick;
-    private int lastTickMs;
+    private Instant tickLast;
+    private int tickLastMs;
+
+    private final List<Integer> tickCache = new LinkedList<>();
+    private double tickStdDev;
 
     @Inject
     private OverlayManager overlayManager;
@@ -51,7 +57,8 @@ public class WorldHealthPlugin extends Plugin
     private void resetState() {
         tickCount = 0;
         tickTotalMs = 0;
-        lastTick = null;
+        tickLast = null;
+        tickCache.clear();
     }
 
     private void start() {
@@ -91,16 +98,51 @@ public class WorldHealthPlugin extends Plugin
     @Subscribe
     public void onGameTick(GameTick tick)
     {
-        if (startupTime.isBefore(Instant.now())) return;
+        final Instant now = Instant.now();
+        if (startupTime.isAfter(now)) return;
 
-        if (lastTick != null)
+        tickCount++;
+
+        if (tickLast != null)
         {
-            lastTickMs = (int) ChronoUnit.MILLIS.between(lastTick, Instant.now());
-            tickTotalMs += lastTickMs;
+            tickLastMs = (int) ChronoUnit.MILLIS.between(tickLast, now);
+            updateAvg();
+            updateStdDev();
         }
 
-        lastTick = Instant.now();
-        tickCount++;
+        tickLast = now;
+    }
+
+    private void updateAvg()
+    {
+        tickTotalMs += tickLastMs;
+        tickAvgMs = tickTotalMs / (double) (tickCount - 1);
+    }
+
+    private void updateStdDev()
+    {
+        tickCache.add(0, tickLastMs);
+        while (tickCache.size() > config.tickStdDevCache())
+        {
+            tickCache.remove(tickCache.size() - 1);
+        }
+
+        int tickSum = 0;
+        for (Integer tick : tickCache)
+        {
+            tickSum += tick;
+        }
+
+        double tickAvg = tickSum / (double) tickCache.size();
+
+        double errorSqSum = 0;
+        for (Integer tick : tickCache)
+        {
+            errorSqSum += Math.pow(tick - tickAvg, 2.0);
+        }
+
+        double variance = errorSqSum / (double) tickCache.size();
+        tickStdDev = Math.sqrt(variance);
     }
 
     protected int getTickCount()
@@ -108,13 +150,23 @@ public class WorldHealthPlugin extends Plugin
         return tickCount;
     }
 
-    protected double getAvgTickMillis()
+    protected double getTickAvgMillis()
     {
-        return tickTotalMs / (double) (tickCount - 1);
+        return tickAvgMs;
     }
 
-    protected int getLastTickMillis()
+    protected int getTickLastMillis()
     {
-        return lastTickMs;
+        return tickLastMs;
+    }
+
+    protected int getStdDevCacheSize()
+    {
+        return tickCache.size();
+    }
+
+    protected double getTickStdDevMillis()
+    {
+        return tickStdDev;
     }
 }

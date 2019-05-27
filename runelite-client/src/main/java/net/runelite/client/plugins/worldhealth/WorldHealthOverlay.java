@@ -37,7 +37,7 @@ public class WorldHealthOverlay extends Overlay
         {
             return "N/A";
         }
-        return plugin.getLastTickMillis() + " ms";
+        return plugin.getTickLastMillis() + " ms";
     }
 
     private Color colorTickLast()
@@ -46,7 +46,7 @@ public class WorldHealthOverlay extends Overlay
         {
             return Color.WHITE;
         }
-        return colorTickTime(plugin.getLastTickMillis());
+        return colorTickTime(plugin.getTickLastMillis());
     }
 
     private String renderTickRate()
@@ -55,7 +55,7 @@ public class WorldHealthOverlay extends Overlay
         {
             return "N/A";
         }
-        return String.format("%.1f ms", plugin.getAvgTickMillis());
+        return String.format("%.1f ms", plugin.getTickAvgMillis());
     }
 
     private Color colorTickRate()
@@ -64,7 +64,16 @@ public class WorldHealthOverlay extends Overlay
         {
             return Color.WHITE;
         }
-        return colorTickTime((int) plugin.getAvgTickMillis());
+        return colorTickTime((int) plugin.getTickAvgMillis());
+    }
+
+    private String renderTickStdDev()
+    {
+        if (plugin.getTickCount() < 2)
+        {
+            return "N/A";
+        }
+        return String.format("%.2f ms", plugin.getTickStdDevMillis());
     }
 
     private static Color colorTickTime(int tickMs) {
@@ -133,6 +142,15 @@ public class WorldHealthOverlay extends Overlay
             .rightColor(colorTickRate())
             .build()
         );
+
+        if (config.showTickStdDev())
+        {
+            panel.getChildren().add(LineComponent.builder()
+                .left("σ(n=" + plugin.getStdDevCacheSize() + ")")
+                .right(renderTickStdDev())
+                .build()
+            );
+        }
 
         return panel.render(graphics);
     }
