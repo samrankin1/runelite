@@ -146,7 +146,7 @@ public class WorldHealthOverlay extends Overlay
         if (config.showTickStdDev())
         {
             panel.getChildren().add(LineComponent.builder()
-                .left("σ(n=" + plugin.getStdDevCacheSize() + ")")
+                .left("σ(n=" + plugin.getStdDevCacheSize() + "):")
                 .right(renderTickStdDev())
                 .build()
             );
