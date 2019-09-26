@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,56 +22,58 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.opponentinfo;
+package net.runelite.client.plugins.music;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
-@ConfigGroup("opponentinfo")
-public interface OpponentInfoConfig extends Config
+@ConfigGroup("music")
+public interface MusicConfig extends Config
 {
 	@ConfigItem(
-		keyName = "lookupOnInteraction",
-		name = "Lookup players on interaction",
-		description = "Display a combat stat comparison panel on player interaction. (follow, trade, challenge, attack, etc.)",
-		position = 0
-	)
-	default boolean lookupOnInteraction()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "hitpointsDisplayStyle",
-		name = "Hitpoints display style",
-		description = "Show opponent's hitpoints as a value (if known), percentage, or both",
+		keyName = "musicVolume",
+		name = "Music Volume",
+		description = "Overrides music volume in game with more granular control",
 		position = 1
 	)
-	default HitpointsDisplayStyle hitpointsDisplayStyle()
+	@Range(
+		min = 0,
+		max = 255
+	)
+	default int getMusicVolume()
 	{
-		return HitpointsDisplayStyle.HITPOINTS;
+		return 0;
 	}
 
 	@ConfigItem(
-		keyName = "showOpponentsOpponent",
-		name = "Show opponent's opponent",
-		description = "Toggle showing opponent's opponent if within a multi-combat area",
+		keyName = "soundEffectVolume",
+		name = "Sound Effect Volume",
+		description = "Overrides the sound effect volume in game with more granular control",
 		position = 2
 	)
-	default boolean showOpponentsOpponent()
+	@Range(
+		min = 0,
+		max = 127
+	)
+	default int getSoundEffectVolume()
 	{
-		return true;
+		return 0;
 	}
 
 	@ConfigItem(
-		keyName = "showOpponentsInMenu",
-		name = "Show opponents in menu",
-		description = "Marks opponents names in the menu which you are attacking or are attacking you (NPC only)",
+		keyName = "areaSoundEffectVolume",
+		name = "Area Sound Effect Volume",
+		description = "Overrides the area sound effect volume in game with more granular control",
 		position = 3
 	)
-	default boolean showOpponentsInMenu()
+	@Range(
+		min = 0,
+		max = 127
+	)
+	default int getAreaSoundEffectVolume()
 	{
-		return false;
+		return 0;
 	}
 }
