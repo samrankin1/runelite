@@ -20,7 +20,7 @@ public class WorldHealthOverlay extends Overlay
     @Inject
     private WorldHealthOverlay(Client client, WorldHealthPlugin plugin, WorldHealthConfig config)
     {
-        setPosition(OverlayPosition.TOP_RIGHT);
+        setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
         this.client = client;
         this.plugin = plugin;
         this.config = config;
