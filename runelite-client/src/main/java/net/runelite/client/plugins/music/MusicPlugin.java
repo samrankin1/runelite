@@ -442,7 +442,7 @@ public class MusicPlugin extends Plugin
 			if (handle != null)
 			{
 				Widget[] siblings = handle.getParent().getChildren();
-				if (siblings.length < handle.getIndex() || siblings[handle.getIndex()] != handle)
+				if (siblings != null && (siblings.length < handle.getIndex() || siblings[handle.getIndex()] != handle))
 				{
 					handle = null;
 				}
