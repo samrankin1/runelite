@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Alexsuperfly <https://github.com/Alexsuperfly>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,35 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
 
-import com.google.inject.Binder;
-import com.google.inject.Injector;
-import com.google.inject.Module;
+package net.runelite.client.util;
 
-public abstract class Plugin implements Module
+public enum ImageUploadStyle
 {
-	protected Injector injector;
-
-	@Override
-	public void configure(Binder binder)
-	{
-	}
-
-	protected void startUp() throws Exception
-	{
-	}
-
-	protected void shutDown() throws Exception
-	{
-	}
-
-	public void resetConfiguration()
-	{
-	}
-
-	public final Injector getInjector()
-	{
-		return injector;
-	}
+	NEITHER,
+	IMGUR,
+	CLIPBOARD
 }
