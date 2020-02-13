@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Trevor <https://github.com/Trevor159>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.gpu.template;
+package net.runelite.api.events;
 
-import java.util.function.Function;
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
+import lombok.Value;
 
-public class TemplateTest
+/**
+ * An event that is fired after the designated script is ran
+ */
+@Value
+public class ScriptPostFired
 {
-	private static final String FILE1 = "" +
-		"test1\n" +
-		"#include file2\n" +
-		"test3\n";
-
-	private static final String FILE2 = "" +
-		"test4\n" +
-		"test5\n";
-
-	private static final String RESULT = "" +
-		"test1\n" +
-		"test4\n" +
-		"test5\n" +
-		"test3\n";
-
-	@Test
-	public void testProcess()
-	{
-		Function<String, String> func = (String resource) ->
-		{
-			switch (resource)
-			{
-				case "file2":
-					return FILE2;
-				default:
-					throw new RuntimeException("unknown resource");
-			}
-		};
-		String out = new Template()
-			.add(func)
-			.process(FILE1);
-		assertEquals(RESULT, out);
-	}
+	/**
+	 * The script id of the invoked script
+	 */
+	private final int scriptId;
 }
