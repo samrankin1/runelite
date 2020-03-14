@@ -411,4 +411,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return ShiftDepositMode.OFF;
 	}
+
+	@ConfigItem(
+		keyName = "swapEssenceMineTeleport",
+		name = "Essence Mine Teleport",
+		description = "Swaps Talk-To with Teleport for NPCs which teleport you to the essence mine"
+	)
+	default boolean swapEssenceMineTeleport() 
+	{
+		return false;
+	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2020, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.tooltip;
+package net.runelite.client.plugins.cluescrolls.clues;
 
-import lombok.Data;
-import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
+import javax.annotation.Nullable;
 
-@Data
-public class Tooltip
+/**
+ * Represents a clue which should highlight objects of a given name rather than a specific ID and location, as some
+ * clues will call for a general action which can be completed at any number of locations. The area in which this
+ * highlighting should occur can be restricted by giving a non-null array of region IDs where only objects within those
+ * regions will be highlighted.
+ */
+public interface NamedObjectClueScroll
 {
-	private String text;
-	private LayoutableRenderableEntity component;
+	String[] getObjectNames();
 
-	public Tooltip(final String text)
-	{
-		this.text = text;
-	}
-
-	public Tooltip(final LayoutableRenderableEntity component)
-	{
-		this.component = component;
-	}
+	@Nullable
+	int[] getObjectRegions();
 }
