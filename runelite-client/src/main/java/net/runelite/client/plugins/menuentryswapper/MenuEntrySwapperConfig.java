@@ -417,8 +417,18 @@ public interface MenuEntrySwapperConfig extends Config
 		name = "Essence Mine Teleport",
 		description = "Swaps Talk-To with Teleport for NPCs which teleport you to the essence mine"
 	)
-	default boolean swapEssenceMineTeleport() 
+	default boolean swapEssenceMineTeleport()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapNets",
+		name = "Nets",
+		description = "Swap Talk-to with Nets on Annette"
+	)
+	default boolean swapNets()
+	{
+		return true;
 	}
 }
