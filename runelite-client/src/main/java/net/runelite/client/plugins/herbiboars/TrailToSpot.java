@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2020, dekvall <https://github.com/dekvall>
+ * Copyright (c) 2020, Jordan <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,50 +23,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.rs;
+package net.runelite.client.plugins.herbiboars;
 
-import java.util.HashMap;
-import java.util.Map;
-import lombok.Getter;
+import com.google.common.collect.ImmutableSet;
+import java.util.Set;
+import lombok.Value;
+import net.runelite.api.Varbits;
 
-@Getter
-class RSConfig
+/**
+ * A representation of a trail of footsteps which appears when hunting for the Herbiboar.
+ */
+@Value
+class TrailToSpot
 {
-	private final Map<String, String> appletProperties = new HashMap<>();
-	private final Map<String, String> classLoaderProperties = new HashMap<>();
+	/**
+	 * The Varbit associated with the trail. When inactive, this Varbit's value should be less than
+	 * {@link TrailToSpot#getValue()}. When this trail appears after searching a spot, this Varbit's value should be
+	 * equal to that of {@link TrailToSpot#getValue()}. Once the next object along the trail has been searched, this
+	 * Varbit's value will be greater than that of {@link TrailToSpot#getValue()}.
+	 */
+	private final Varbits varbit;
+	/**
+	 * The cutoff reference value to compare against the value of {@link TrailToSpot#getVarbit()} to determine its state
+	 * along the current trail.
+	 */
+	private final int value;
+	/**
+	 * The object ID of the footprints which appear when the trail is made visible.
+	 */
+	private final int footprint;
 
-	String getCodeBase()
+	Set<Integer> getFootprintIds()
 	{
-		return classLoaderProperties.get("codebase");
-	}
-
-	void setCodebase(String codebase)
-	{
-		classLoaderProperties.put("codebase", codebase);
-	}
-
-	String getInitialJar()
-	{
-		return classLoaderProperties.get("initial_jar");
-	}
-
-	String getInitialClass()
-	{
-		return classLoaderProperties.get("initial_class").replace(".class", "");
-	}
-
-	boolean isFallback()
-	{
-		return getRuneLiteGamepack() != null;
-	}
-
-	String getRuneLiteGamepack()
-	{
-		return classLoaderProperties.get("runelite.gamepack");
-	}
-
-	String getRuneLiteWorldParam()
-	{
-		return classLoaderProperties.get("runelite.worldparam");
+		return ImmutableSet.of(footprint, footprint + 1);
 	}
 }

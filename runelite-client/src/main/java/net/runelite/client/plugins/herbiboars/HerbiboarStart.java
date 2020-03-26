@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2020, dekvall <https://github.com/dekvall>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,50 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.rs;
+package net.runelite.client.plugins.herbiboars;
 
-import java.util.HashMap;
-import java.util.Map;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import net.runelite.api.coords.WorldPoint;
 
 @Getter
-class RSConfig
+@RequiredArgsConstructor
+enum HerbiboarStart
 {
-	private final Map<String, String> appletProperties = new HashMap<>();
-	private final Map<String, String> classLoaderProperties = new HashMap<>();
+	MIDDLE(new WorldPoint(3686, 3870, 0)),
+	LEPRECHAUN(new WorldPoint(3705, 3830, 0)),
+	CAMP_ENTRANCE(new WorldPoint(3704, 3810, 0)),
+	GHOST_MUSHROOM(new WorldPoint(3695, 3800, 0)),
+	DRIFTWOOD(new WorldPoint(3751, 3850, 0)),
+	;
 
-	String getCodeBase()
-	{
-		return classLoaderProperties.get("codebase");
-	}
+	private final WorldPoint location;
 
-	void setCodebase(String codebase)
+	static HerbiboarStart from(WorldPoint location)
 	{
-		classLoaderProperties.put("codebase", codebase);
-	}
-
-	String getInitialJar()
-	{
-		return classLoaderProperties.get("initial_jar");
-	}
-
-	String getInitialClass()
-	{
-		return classLoaderProperties.get("initial_class").replace(".class", "");
-	}
-
-	boolean isFallback()
-	{
-		return getRuneLiteGamepack() != null;
-	}
-
-	String getRuneLiteGamepack()
-	{
-		return classLoaderProperties.get("runelite.gamepack");
-	}
-
-	String getRuneLiteWorldParam()
-	{
-		return classLoaderProperties.get("runelite.worldparam");
+		for (final HerbiboarStart start : values())
+		{
+			if (start.getLocation().equals(location))
+			{
+				return start;
+			}
+		}
+		return null;
 	}
 }
