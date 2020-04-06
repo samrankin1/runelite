@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2020, Dennis <me@dennis.dev>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.woodcutting;
+package net.runelite.client.plugins.grandexchange;
 
-import java.time.Instant;
-
-class WoodcuttingSession
+public enum GrandExchangeSearchMode
 {
-	private Instant lastChopping;
+	DEFAULT,
 
-	void setLastChopping()
-	{
-		lastChopping = Instant.now();
-	}
+	FUZZY_FALLBACK,
 
-	Instant getLastChopping()
-	{
-		return lastChopping;
-	}
+	FUZZY_ONLY
 }

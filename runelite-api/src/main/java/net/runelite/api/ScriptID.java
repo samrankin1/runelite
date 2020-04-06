@@ -162,8 +162,8 @@ public final class ScriptID
 	 *
 	 * Updates the VarClientInts (73, 74) to this same value
 	 * <ul>
-	 * <li> int  Reset zoom position </li>
-	 * <li> int  Reset zoom position </li>
+	 * <li> int  Reset zoom position for fixed viewport mode</li>
+	 * <li> int  Reset zoom position for resizable viewport mode</li>
 	 * </ul>
 	 */
 	@ScriptArguments(integer = 2)
@@ -221,6 +221,12 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 15)
 	public static final int GE_OFFERS_SETUP_BUILD = 779;
+
+	/**
+	 * Builds the grand exchange item search widget
+	 */
+	@ScriptArguments(integer = 2)
+	public static final int GE_ITEM_SEARCH = 752;
 
 	/**
 	 * Builds the quest list inside the quest tab that shows each quest's progress
