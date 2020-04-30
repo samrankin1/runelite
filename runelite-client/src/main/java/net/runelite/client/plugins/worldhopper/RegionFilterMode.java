@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2019, Liam Edwards <http://github.com/Spedwards>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.tooltip;
+package net.runelite.client.plugins.worldhopper;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Singleton;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import net.runelite.http.api.worlds.WorldRegion;
 
-@Singleton
-public class TooltipManager
+@NoArgsConstructor
+@AllArgsConstructor
+public enum RegionFilterMode
 {
+	NONE,
+	AUSTRALIA(WorldRegion.AUSTRALIA),
+	GERMANY(WorldRegion.GERMANY),
+	UNITED_KINGDOM(WorldRegion.UNITED_KINGDOM)
+		{
+			@Override
+			public String toString()
+			{
+				return "U.K.";
+			}
+		},
+	UNITED_STATES(WorldRegion.UNITED_STATES_OF_AMERICA)
+		{
+			@Override
+			public String toString()
+			{
+				return "USA";
+			}
+		};
+
 	@Getter
-	private final List<Tooltip> tooltips = new ArrayList<>();
-
-	public void add(Tooltip tooltip)
-	{
-		tooltips.add(tooltip);
-	}
-
-	public void addFront(Tooltip tooltip)
-	{
-		tooltips.add(0, tooltip);
-	}
-
-	public void clear()
-	{
-		tooltips.clear();
-	}
+	private WorldRegion region;
 }
